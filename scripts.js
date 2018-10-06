@@ -1,7 +1,6 @@
 
 
 function round(pSel, cSel) {
-	pSel = pSel.charAt(0).toUpperCase() + pSel.substring(1, pSel.length).toLowerCase();
 	let winLose = "";
 
 	if(pSel == "Paper") {
@@ -48,25 +47,31 @@ function cChoice() {
 	return choices[num];
 }
 
+let p1Score = 0;
+let p2Score = 0;
+let rounds = 1;
+let banner = document.querySelector(".banner");
+let p1 = document.querySelector(".player-1 .score");
+let p2 = document.querySelector(".player-2 .score");
 function game() {
-	let p1Score = 0;
-	let p2Score = 0;
-	do {
-		let pChoice = prompt("Rock, Paper, or Scissors?");
-		let result = round(pChoice, cChoice());
-		if(result.indexOf("win") != -1) {
-			p1Score += 1;
-		} else if(result.indexOf("lose") != -1) {
-			p2Score += 1;
-		}
-		alert(result);
-	} while(p1Score + p2Score < 5);
+	let pChoice = this.getAttribute("data-key"); 
+	let result = round(pChoice, cChoice());
+	banner.textContent = result;
+	if(result.indexOf("win") != -1) {
+		p1Score++;
+		p1.textContent = p1Score;
+	} else if(result.indexOf("lose") != -1) {
+		p2Score++;
+		p2.textContent = p2Score;
+	}
 
-	if(p1Score > p2Score) {
-		alert("You Won! P1: " + p1Score + " vs. P2: " + p2Score);
-	} else {
-		alert("You Lost! P1: " + p1Score + " vs. P2: " + p2Score);
+	if(rounds > 5) {
+		if(p1Score > p2Score) {
+			banner.textContent = "You Won! P1: " + p1Score + " vs. P2: " + p2Score;
+		} else {
+			banner.textContent = "You Lost! P1: " + p1Score + " vs. P2: " + p2Score;
+		}
 	}
 }
 
-game();
+document.querySelectorAll(".image").forEach(img => img.addEventListener("click", game));
